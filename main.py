@@ -25,7 +25,7 @@ def upload_file():
             file2 = request.files['Other']
             try:
                 if allowed_file(file1.filename) and allowed_file(file2.filename):
-                    queryReport(file1)
+                    #queryReport(file1)
                     return send_file('QueryReport.xlsx', as_attachment=True)
             except Exception as e:
                 print(e)

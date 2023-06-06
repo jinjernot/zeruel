@@ -20,7 +20,7 @@ def queryReport(file1):
             ws.cell(row=i + 1, column=2).value = oid_values[i]
 
 
-        wb.save('QueryReport.xlsx')
+        #wb.save('QueryReport.xlsx')
 
     except Exception as e:
         print(e)
