@@ -1,5 +1,4 @@
 import pandas as pd
-
 from openpyxl import load_workbook
 from openpyxl.styles import Font
 
@@ -10,58 +9,70 @@ def load_excel_files(file1, file2):
 
 def insert_rows(df1, df2, output_file="PCCS.xlsx"):
 
-
-    
     # Merge dataframes based on the "Sku" and "SKU" columns
     merged_df = pd.merge(df1, df2, left_on="Sku", right_on="SKU", how="inner")
-    
-
 
     # Initialize an empty list to store rows for insertion
     rows_to_insert = []
 
+    # Keep track of processed sku_search_values
+    processed_skus = set()
+
     # Iterate through the merged dataframe
     for index, row in merged_df.iterrows():
-        # Check if "ContainerName" and "ContainerValue" are not NaN or floats
-        if not pd.isna(row["ContainerName"]) and not pd.isna(row["ContainerValue"]):
-            # For each unique combination of "ContainerName" and "ContainerValue" in df2, insert a new row
-            container_names = row["ContainerName"] if isinstance(row["ContainerName"], list) else [row["ContainerName"]]
-            container_values = row["ContainerValue"] if isinstance(row["ContainerValue"], list) else [row["ContainerValue"]]
-            
-            for container_name, container_value in zip(container_names, container_values):
-                new_row = row.copy()
-                new_row["ContainerName"] = container_name
-                new_row["ContainerValue"] = container_value
-                rows_to_insert.append(new_row)
+        sku_search_value = row["Sku"]
+
+        # Check if the sku_search_value has already been processed
+        if sku_search_value in processed_skus:
+            continue
+
+        # Perform the search in "df2" using the selected value.
+        osinstalled = df2[(df2["SKU"] == sku_search_value) & (df2["ContainerName"] == "osinstalled")]
+        processorname = df2[(df2["SKU"] == sku_search_value) & (df2["ContainerName"] == "processorname")]
+        memstdes_01 = df2[(df2["SKU"] == sku_search_value) & (df2["ContainerName"] == "memstdes_01")]
+        hd_01des = df2[(df2["SKU"] == sku_search_value) & (df2["ContainerName"] == "hd_01des")]
+
+        # Retrieve the values from the "ContainerValue" column of the search results.
+        osinstalled_values = osinstalled["ContainerValue"].values.tolist()
+        processorname_values = processorname["ContainerValue"].values.tolist()
+        memstdes_01_values = memstdes_01["ContainerValue"].values.tolist()
+        hd_01des_values = hd_01des["ContainerValue"].values.tolist()
+
+        # Check if any search result is found
+        if osinstalled_values and processorname_values and memstdes_01_values and hd_01des_values:
+            # Use only the first matching row
+            osinstalled_value = osinstalled_values[0]
+            processorname_value = processorname_values[0]
+            memstdes_01_value = memstdes_01_values[0]
+            hd_01des_value = hd_01des_values[0]
+
+            name_value = row["Name"]  # Get the value from the "Name" column in df1
+            chunk_value = f"{name_value} with {osinstalled_value} {processorname_value} {memstdes_01_value} {hd_01des_value} Low halogen"
+
+            # Create a new row with the extracted values
+            new_row = {
+                "Sku": sku_search_value,
+                "Item_Id": row["Item_Id"],  # Include "Item_Id" from df1
+                "ItemLevel": "Product",
+                "CultureCode": "na-en",
+                "DataType": "Text",
+                "Tag": "prodlongname",
+                "ChunkValue": chunk_value,
+            }
+
+            # Append the new row to the list
+            rows_to_insert.append(new_row)
+
+            # Add sku_search_value to the set of processed values
+            processed_skus.add(sku_search_value)
 
     # Create a new dataframe with the rows to insert
     new_rows_df = pd.DataFrame(rows_to_insert)
 
-    # Concatenate the original df1 with the new rows
-    result_df = pd.concat([df1, new_rows_df], ignore_index=True)
-
-        # List of columns to exclude
-    columns_to_exclude = [
-        "Sku","Name","ComponentCompletionDate", "PL", "Item_Id", "Small Series", "Big Series", "Option", "Status", 
-        "CodeName", "SKU_FirstAppearanceDate", "SKU_CompletionDate", "SKU_Aging", 
-        "ComponentGroup", "PhwebValue", "PhwebDescription", "ExtendedDescription", 
-        "Component", "CompletionDate", "ComponentReadiness", "SKUReadiness"
-    ]
-
-    # Drop the specified columns from the merged dataframe
-    result_df = result_df.drop(columns=columns_to_exclude, errors='ignore')
-
-    result_df = result_df.rename(columns={
-        "OID": "ItemId",
-        "SKU": "ItemName",
-        "ContainerName": "Tag",
-        "ContainerValue": "ChunkValue"
-    })
-
     # Save the result to a new Excel file with bold first row
     with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
         # Write the DataFrame to the Excel file
-        result_df.to_excel(writer, index=False, sheet_name='Sheet1')
+        new_rows_df.to_excel(writer, index=False, sheet_name='Sheet1')
 
         # Access the openpyxl workbook and worksheet
         workbook = writer.book
