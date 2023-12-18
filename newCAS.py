@@ -9,10 +9,10 @@ def load_excel_files(file1, file2):
 
 def insert_rows(df1, df2, output_file="PCCS.xlsx"):
 
-    # Merge dataframes based on the "Sku" and "SKU" columns
+    # Merge df
     merged_df = pd.merge(df1, df2, left_on="Sku", right_on="SKU", how="inner")
 
-    # Initialize an empty list to store rows for insertion
+    # Initialize an empty list
     rows_to_insert = []
 
     # Keep track of processed sku_search_values
