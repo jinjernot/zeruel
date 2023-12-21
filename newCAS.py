@@ -1,6 +1,9 @@
 import pandas as pd
-from openpyxl import load_workbook
 from openpyxl.styles import Font
+from config import ca_cert_path, client_cert_path, client_key_path, url
+import requests
+import json
+
 
 def load_excel_files(file1, file2):
     return pd.read_excel(file1), pd.read_excel(file2)
@@ -19,7 +22,7 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
 
     processed_skus = set()
 
-    # Iterate through "merged_df"
+# Iterate through "merged_df"
     for _, row in merged_df.iterrows():
         sku = row["Sku"]
 
@@ -38,21 +41,39 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
             name_value = row["Name"]
             chunk_value = f"{name_value} with {osinstalled_value} {processorname_value} {memstdes_01_value} {hd_01des_value} Low halogen"
 
-            # Iterate over tag values
-            for tag in ["prodlongname", "warranty_features"]:
-                new_row = {
+            # Get big_series_data using the helper function
+            big_series_data = get_product(sku)
+
+            # Check if big_series_data is not None before accessing its elements
+            if big_series_data is not None:
+                # Create a row for prodlongname
+                prodlongname_row = {
                     "Sku": sku,
                     "Item_Id": row["Item_Id"],
                     "ItemLevel": "Product",
                     "CultureCode": "na-en",
                     "DataType": "Text",
-                    "Tag": tag,
-                    "ChunkValue": chunk_value if tag == "prodlongname" else "",
+                    "Tag": "prodlongname",
+                    "ChunkValue": chunk_value
                 }
+                rows_to_insert.append(prodlongname_row)
 
-                # Append the new row to the list
-                rows_to_insert.append(new_row)
+                # Create a row for warranty_features
+                warranty_row = {
+                    "Sku": sku,
+                    "Item_Id": row["Item_Id"],
+                    "ItemLevel": "Product",
+                    "CultureCode": "na-en",
+                    "DataType": "Text",
+                    "Tag": "warranty_features",
+                    "ChunkValue": big_series_data.get("name")
+                }
+                rows_to_insert.append(warranty_row)
 
+                # Add sku to the set of processed values
+                processed_skus.add(sku)
+            else:
+                print(f"big_series_data is None for SKU: {sku}. Skipping...")
             # Add sku to the set of processed values
             processed_skus.add(sku)
 
@@ -71,6 +92,41 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
         # Bold the first row
         for cell in worksheet["1:1"]:
             cell.font = Font(bold=True)
+
+def get_product(sku):
+    try:
+        ca_cert = ca_cert_path
+        client_cert = (client_cert_path, client_key_path)
+
+        json_data = {
+            "sku": [sku],
+            "countryCode": "US",
+            "languageCode": "EN",
+            "layoutName": "PDPCOMBO",
+            "requestor": "HERMESQA-PRO",
+            "reqContent": ["hierarchy"]
+        }
+
+        response = requests.post(
+            url,
+            cert=client_cert,
+            verify=ca_cert,
+            headers={'Content-Type': 'application/json'},
+            data=json.dumps(json_data)
+        )
+
+        if response.status_code == 200:
+            print("Request successful!")
+
+            response = response.json()
+            big_series_data = response["products"][sku]["productHierarchy"]["bigSeries"]
+
+            return big_series_data
+        else:
+            print(f"Request failed with status code {response.status_code}")
+            print(f"Response content: {response.text}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 def main():
     file1 = "./docs/QueryReport.xlsx"
