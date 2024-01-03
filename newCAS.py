@@ -116,10 +116,15 @@ def get_product(sku):
         )
 
         if response.status_code == 200:
-            print("Request successful!")
+            #print("Request successful!")
+
+            # Save the response to a JSON file
+            json_filename = f"response_{sku}.json"
+            with open(json_filename, 'w') as json_file:
+                json.dump(response.json(), json_file)
 
             response = response.json()
-            big_series_data = response["products"][sku]["productHierarchy"]["bigSeries"]
+            big_series_data = response["products"][sku]["productHierarchy"]["marketingCategory"]
 
             return big_series_data
         else:
