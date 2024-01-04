@@ -119,9 +119,9 @@ def get_product(sku):
             #print("Request successful!")
 
             # Save the response to a JSON file
-            json_filename = f"response_{sku}.json"
-            with open(json_filename, 'w') as json_file:
-                json.dump(response.json(), json_file)
+            #json_filename = f"response_{sku}.json"
+            #with open(json_filename, 'w') as json_file:
+            #    json.dump(response.json(), json_file)
 
             response = response.json()
             big_series_data = response["products"][sku]["productHierarchy"]["marketingCategory"]
