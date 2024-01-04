@@ -1,25 +1,30 @@
-import pandas as pd
+from config.config import ca_cert_path, client_cert_path, client_key_path, url
 from openpyxl.styles import Font
-from config import ca_cert_path, client_cert_path, client_key_path, url
+
+import pandas as pd
 import requests
 import json
 
-
 def load_excel_files(file1, file2):
+    """Load QueryReport and SCS Accurracy files"""
+
     return pd.read_excel(file1), pd.read_excel(file2)
 
 def get_container_value(df, sku, container_name):
+    """Look for the container value from df2"""
+
     container = df[(df["SKU"] == sku) & (df["ContainerName"] == container_name)]
     values = container["ContainerValue"].values.tolist()
     return values[0] if values else None
 
 def insert_rows(df1, df2, output_file="PCCS.xlsx"):
+    """Create a new dataframe with the values found in both reports, insert the productlongname and warranty values"""
+
     # Merge dfs
     merged_df = pd.merge(df1, df2, left_on="Sku", right_on="SKU", how="inner")
 
-    # Initialize empty list
+    # Initialize empty lists
     rows_to_insert = []
-
     processed_skus = set()
 
 # Iterate through "merged_df"
@@ -30,7 +35,7 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
         if sku in processed_skus:
             continue
 
-        # Get values from "df2" using the helper function
+        # Get values from "SCS" using the get_container_value function
         osinstalled_value = get_container_value(df2, sku, "osinstalled")
         processorname_value = get_container_value(df2, sku, "processorname")
         memstdes_01_value = get_container_value(df2, sku, "memstdes_01")
@@ -58,7 +63,11 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
                 }
                 rows_to_insert.append(prodlongname_row)
 
-                # Create a row for warranty_features
+                if isinstance(big_series_data, dict):
+                    chunk_value = big_series_data.get("name")
+                else:
+                    chunk_value = big_series_data
+
                 warranty_row = {
                     "Sku": sku,
                     "Item_Id": row["Item_Id"],
@@ -66,26 +75,27 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
                     "CultureCode": "na-en",
                     "DataType": "Text",
                     "Tag": "warranty_features",
-                    "ChunkValue": big_series_data.get("name")
+                    "ChunkValue": chunk_value
                 }
                 rows_to_insert.append(warranty_row)
 
                 # Add sku to the set of processed values
                 processed_skus.add(sku)
             else:
-                print(f"big_series_data is None for SKU: {sku}. Skipping...")
+                print(f"Missing SKU: {sku}. Skipping...")
             # Add sku to the set of processed values
             processed_skus.add(sku)
 
     # Create a new dataframe with the rows to insert
     prodlongname_df = pd.DataFrame(rows_to_insert)
+    
 
-    # Save the result to a new Excel file with bold first row
+    # Save the result to a new Excel file
     with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
         # Write the DataFrame to the Excel file
         prodlongname_df.to_excel(writer, index=False, sheet_name='Sheet1')
 
-        # Access the openpyxl workbook and worksheet
+        # Access workbook and worksheet
         workbook = writer.book
         worksheet = writer.sheets['Sheet1']
 
@@ -94,6 +104,7 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
             cell.font = Font(bold=True)
 
 def get_product(sku):
+    """Get products from API"""
     try:
         ca_cert = ca_cert_path
         client_cert = (client_cert_path, client_key_path)
@@ -116,17 +127,29 @@ def get_product(sku):
         )
 
         if response.status_code == 200:
-            #print("Request successful!")
-
             # Save the response to a JSON file
             #json_filename = f"response_{sku}.json"
             #with open(json_filename, 'w') as json_file:
             #    json.dump(response.json(), json_file)
 
-            response = response.json()
-            big_series_data = response["products"][sku]["productHierarchy"]["marketingCategory"]
+            response_data = response.json()
+            
+            marketing_category = response_data["products"][sku]["productHierarchy"]["marketingCategory"].get("name")
+
+            if marketing_category == "Workstations":
+                marketing_sub_category = response_data["products"][sku]["productHierarchy"]["marketingSubCategory"].get("name")
+                
+                if marketing_sub_category == "HP Mobile Workstation":
+                    # Use marketing_sub_category value instead of marketing_category
+                    big_series_data = marketing_sub_category
+                else:
+                    big_series_data = marketing_category
+            else:
+                big_series_data = marketing_category
 
             return big_series_data
+
+
         else:
             print(f"Request failed with status code {response.status_code}")
             print(f"Response content: {response.text}")
