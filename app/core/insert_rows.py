@@ -104,7 +104,6 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
                 if any(ms4_filtered_df["DESCRIPTION"].str.contains(warranty_value)):
                     prodlongname_df.at[index, "ChunkValue"] = description
  
-
     # Save the result to a new Excel file
     with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
         # Write the DataFrame to the Excel file

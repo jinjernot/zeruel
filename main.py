@@ -10,7 +10,7 @@ def main():
         df1 = pd.read_excel(file1_path)
         df2 = pd.read_excel(file2_path)
 
-        # Insert rows using the insert_rows function
+        # Insert rows
         insert_rows(df1, df2)
 
     except Exception as e:

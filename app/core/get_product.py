@@ -2,7 +2,6 @@ from config.config import ca_cert_path, client_cert_path, client_key_path, url
 import requests
 import json
 
-
 def get_product(sku):
     """Get products from API"""
     try:
@@ -33,7 +32,7 @@ def get_product(sku):
             #    json.dump(response.json(), json_file)
 
             response_data = response.json()
-            
+        
             marketing_category = response_data["products"][sku]["productHierarchy"]["marketingCategory"].get("name")
 
             if marketing_category == "Workstations":
@@ -46,12 +45,10 @@ def get_product(sku):
                     api_data = marketing_category
             else:
                 api_data = marketing_category
-
             return api_data
-
 
         else:
             print(f"Request failed with status code {response.status_code}")
-            print(f"Response content: {response.text}")
+            print(f"Response: {response.text}")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"Error: {e}")
