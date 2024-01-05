@@ -46,11 +46,11 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
             name_value = row["Name"]
             chunk_value = f"{name_value} with {osinstalled_value} {processorname_value} {memstdes_01_value} {hd_01des_value} Low halogen"
 
-            # Get big_series_data using the helper function
-            big_series_data = get_product(sku)
+            # Get data from API using the get_product function
+            api_data = get_product(sku)
 
-            # Check if big_series_data is not None before accessing its elements
-            if big_series_data is not None:
+            # Check if api_data is not None before accessing its elements
+            if api_data is not None:
                 # Create a row for prodlongname
                 prodlongname_row = {
                     "Sku": sku,
@@ -63,10 +63,10 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
                 }
                 rows_to_insert.append(prodlongname_row)
 
-                if isinstance(big_series_data, dict):
-                    chunk_value = big_series_data.get("name")
+                if isinstance(api_data, dict):
+                    chunk_value = api_data.get("name")
                 else:
-                    chunk_value = big_series_data
+                    chunk_value = api_data
 
                 warranty_row = {
                     "Sku": sku,
@@ -88,6 +88,41 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
 
     # Create a new dataframe with the rows to insert
     prodlongname_df = pd.DataFrame(rows_to_insert)
+
+    # Read data from "ms4_filtered.xlsx"
+    ms4_filtered_df = pd.read_excel("ms4_filtered.xlsx")
+
+    # Load warranty data from JSON file
+    with open('data/warranty.json', 'r') as json_file:
+        warranty_data = json.load(json_file)
+
+    # Iterate through the rows in prodlongname_df
+    for index, row in prodlongname_df.iterrows():
+        sku = row["Sku"]
+        chunk_value = row["ChunkValue"]
+        tag = row["Tag"]
+
+        # Check if SKU exists in ms4_filtered_df and Tag is "warranty_features"
+        if tag == "warranty_features" and any(ms4_filtered_df["SKU"].str.contains(str(sku))):
+            
+            # Check if ChunkValue matches any "Product" in the warranty_data
+            matching_products = [product for warranty_list in warranty_data["warranty"] for product in warranty_list if product["Product"] == chunk_value]
+            
+            if matching_products:
+                # Update prodlongname_df with the "Description" value
+                description = matching_products[0]["Description"]
+                
+                # Additional check: Check if "Warranty" value is present in "DESCRIPTION" column of ms4_filtered_df
+                warranty_value = matching_products[0]["Warranty"]
+                if any(ms4_filtered_df["DESCRIPTION"].str.contains(warranty_value)):
+                    prodlongname_df.at[index, "ChunkValue"] = description
+                    print(f"Updated SKU: {sku}, ChunkValue with Description: {description}")
+                else:
+                    print(f"No match found for Warranty: {warranty_value} in SKU: {sku}, ChunkValue: {chunk_value}")
+            else:
+                print(f"No match found for SKU: {sku}, ChunkValue: {chunk_value}")
+
+
     
 
     # Save the result to a new Excel file
@@ -102,6 +137,9 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
         # Bold the first row
         for cell in worksheet["1:1"]:
             cell.font = Font(bold=True)
+
+
+
 
 def get_product(sku):
     """Get products from API"""
@@ -141,13 +179,13 @@ def get_product(sku):
                 
                 if marketing_sub_category == "HP Mobile Workstation":
                     # Use marketing_sub_category value instead of marketing_category
-                    big_series_data = marketing_sub_category
+                    api_data = marketing_sub_category
                 else:
-                    big_series_data = marketing_category
+                    api_data = marketing_category
             else:
-                big_series_data = marketing_category
+                api_data = marketing_category
 
-            return big_series_data
+            return api_data
 
 
         else:
