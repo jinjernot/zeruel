@@ -1,4 +1,4 @@
-from config.config import ca_cert_path, client_cert_path, client_key_path, url
+from app.config.config import *
 import requests
 import json
 
