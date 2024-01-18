@@ -74,7 +74,7 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
             processed_skus.add(sku)
 
     # Create a new dataframe with the rows to insert
-    prodlongname_df = pd.DataFrame(rows_to_insert)
+    pccs_df = pd.DataFrame(rows_to_insert)
 
     # Read data from "ms4_filtered.xlsx"
     ms4_filtered_df = pd.read_excel("ms4_filtered.xlsx")
@@ -83,8 +83,8 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
     with open('data/warranty.json', 'r') as json_file:
         warranty_data = json.load(json_file)
 
-    # Iterate through the rows in prodlongname_df
-    for index, row in prodlongname_df.iterrows():
+    # Iterate through the rows in pccs_df
+    for index, row in pccs_df.iterrows():
         sku = row["Sku"]
         chunk_value = row["ChunkValue"]
         tag = row["Tag"]
@@ -96,18 +96,22 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
             matching_products = [product for warranty_list in warranty_data["warranty"] for product in warranty_list if product["Product"] == chunk_value]
             
             if matching_products:
-                # Update prodlongname_df with the "Description" value
+                # Update pccs_df with the "Description" value
                 description = matching_products[0]["Description"]
                 
                 # Additional check: Check if "Warranty" value is present in "DESCRIPTION" column of ms4_filtered_df
                 warranty_value = matching_products[0]["Warranty"]
                 if any(ms4_filtered_df["DESCRIPTION"].str.contains(warranty_value)):
-                    prodlongname_df.at[index, "ChunkValue"] = description
+                    pccs_df.at[index, "ChunkValue"] = description
+
+    pccs_df['ChunkStatus'] = 'F'
+    pccs_df['SourceLevel'] = ''
+    pccs_df['SourceCulture'] = ''
  
     # Save the result to a new Excel file
     with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
         # Write the DataFrame to the Excel file
-        prodlongname_df.to_excel(writer, index=False, sheet_name='Sheet1')
+        pccs_df.to_excel(writer, index=False, sheet_name='Sheet1')
 
         # Access workbook and worksheet
         workbook = writer.book

@@ -27,69 +27,54 @@
                 "Description": "90-day (90-90-90) limited warranty and service offering includes 90 days of parts, labor and on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
             },
             {
-                "Product": "Mobile Thin Clients",
-                "Warranty": "1-1-0",
-                "Description": "1 year (1-1-0) limited warranty and service offering includes 1 year of unit exchange with no on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
+                "Product": "Business Desktop PCs",
+                "Warranty": "4-4-4",
+                "Description": "4 year (4-4-4) limited warranty and service offering includes 4 years of parts, labor and on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
             },
             {
-                "Product": "Mobile Thin Clients",
+                "Product": "Business Desktop PCs",
+                "Warranty": "5-5-5",
+                "Description": "5 year (5-5-5) limited warranty and service offering includes 5 years of parts, labor and on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
+            },
+            {
+                "Product": "Mobile Thin Client",
                 "Warranty": "1-1-0",
                 "Description": "1 year limited parts, labor (1-1-0) warranty. Certain restrictions and exclusions apply."
             },
             {
-                "Product": "Mobile Thin Clients",
+                "Product": "Mobile Thin Client",
                 "Warranty": "3-3-0",
                 "Description": "3 year (3-3-0) limited warranty and service offering includes 3 year of unit exchange with no on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
             },
             {
-                "Product": "Mobile Thin Clients",
+                "Product": "Mobile Thin Client",
                 "Warranty": "3-3-3",
                 "Description": "3 year (3-3-3) limited warranty and service offering includes 3 years of unit exchange including on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
             },
             {
-                "Product": "Mobile Worksation",
+                "Product": "Mobile Workstation",
                 "Warranty": "1-1-0",
                 "Description": "1 year (1-1-0) limited warranty and service offering includes 1 year of parts and labor. Terms and conditions vary by country."
             },
             {
-                "Product": "Mobile Worksation",
+                "Product": "Mobile Workstation",
                 "Warranty": "3-3-0",
                 "Description": "3 year (3-3-0) limited warranty and service offering includes 3 years of parts and labor. Terms and conditions vary by country."
             },
             {
-                "Product": "Mobile Worksation",
-                "Warranty": "3-3-0",
-                "Description": "3 year (3-3-0) standard parts and labor limited warranty. On-site service and extended coverage is also available. Optional Care Pack Services are optional extended service contracts that go beyond the standard limited warranties. To choose the right level of service for your HP product, use the HP Care Pack Services Lookup Tool at: http://www.hp.com/go/cpc"
-            },
-            {
-                "Product": "Mobile Worksation",
+                "Product": "Mobile Workstation",
                 "Warranty": "1-1-1",
                 "Description": "Protected by HP Services, including a standard limited 1 year parts, 1 year labor, and 1 year onsite service (1-1-1) warranty. Certain restrictions and exclusions apply."
             },
             {
-                "Product": "Mobile Worksation",
-                "Warranty": "3-3-3",
-                "Description": "Protected by HP Services, including a 3 years parts, 3 years labor, and 3 years onsite service (3-3-3) standard limited warranty. Certain restrictions. 24/7 operation will not void the HP warranty."
-            },
-            {
-                "Product": "Mobile Worksation",
-                "Warranty": "3-3-3",
-                "Description": "Protected by HP Services, including a standard limited 3 years parts, 3 years labor, and 3 years onsite service (3-3-3) limited warranty. HP Services offers 3 year limited warranty and 90 day software limited warranty options depending on country. Batteries have a default one year limited warranty except for Long Life batteries which will have same 1 year or 3 year limited warranty as the platform. HP Care Pack Services are optional extended service contracts that go beyond the standard limited warranties. To choose the right level of service for your HP product, use the HP Care Pack Services Lookup Tool at: http://www.hp.com/go/cpc"
-            },
-            {
-                "Product": "Mobile Worksation",
+                "Product": "Mobile Workstation",
                 "Warranty": "3-3-3",
                 "Description": "Protected by HP Services, including a standard limited 3 years parts, 3 years labor, and 3 years onsite service (3-3-3) warranty. Certain restrictions and exclusions apply."
             },
             {
-                "Product": "Mobile Worksation",
+                "Product": "Mobile Workstation",
                 "Warranty": "90-90-0",
                 "Description": "90-days limited parts (90-90-0) standard warranty. Certain restrictions and exclusions apply."
-            },
-            {
-                "Product": "Business Laptop PCs",
-                "Warranty": "1-1-0",
-                "Description": "1 year standard parts and labor limited warranty (1-1-0), depending on country (upgrades available). 1 year limited warranty on primary battery."
             },
             {
                 "Product": "Business Laptop PCs",
@@ -99,12 +84,7 @@
             {
                 "Product": "Business Laptop PCs",
                 "Warranty": "3-3-0",
-                "Description": "3 year limited parts, labor (3-3-0) warranty. Certain restrictions and exclusions apply."
-            },
-            {
-                "Product": "Business Laptop PCs",
-                "Warranty": "3-3-0",
-                "Description": "3 years standard parts and labor limited warranty (3-3-0), depending on country (upgrades available). 1 year limited warranty on primary battery."
+                "Description": "3 year limited parts, labor  (3-3-0) warranty. Certain restrictions and exclusions apply."
             },
             {
                 "Product": "Business Laptop PCs",
@@ -144,7 +124,7 @@
             {
                 "Product": "Tablets",
                 "Warranty": "3-3-0",
-                "Description": "3 year limited parts and labor (3-3-0) warranty. Certain restrictions and exclusions apply."
+                "Description": "3 year limited parts and labor (3-3-0)  warranty. Certain restrictions and exclusions apply."
             },
             {
                 "Product": "Tablets",
@@ -152,24 +132,19 @@
                 "Description": "Protected by HP Services, including a 3 year parts, 3 years labor, and 3 years onsite service (3-3-3) limited warranty. Terms and conditions vary by country. Certain restrictions and exclusions apply."
             },
             {
-                "Product": "Thin Clients",
+                "Product": "Thin Client",
                 "Warranty": "1-1-0",
                 "Description": "1 year limited parts, labor (1-1-0) warranty. Certain restrictions and exclusions apply."
             },
             {
-                "Product": "Thin Clients",
+                "Product": "Thin Client",
                 "Warranty": "3-3-0",
                 "Description": "3 year (3-3-0) limited warranty and service offering includes 3 year of unit exchange with no on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
             },
             {
-                "Product": "Thin Clients",
+                "Product": "Thin Client",
                 "Warranty": "3-3-3",
                 "Description": "3 year (3-3-3) limited warranty and service offering includes 3 years of parts, labor and on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
-            },
-            {
-                "Product": "Workstations",
-                "Warranty": "3-3-0",
-                "Description": "3 year (3-3-0) standard parts and labor limited warranty. On-site service and extended coverage is also available. Optional Care Pack Services are optional extended service contracts that go beyond the standard limited warranties. To choose the right level of service for your HP product, use the HP Care Pack Services Lookup Tool at: http://www.hp.com/go/cpc"
             },
             {
                 "Product": "Workstations",
@@ -180,6 +155,16 @@
                 "Product": "Workstations",
                 "Warranty": "3-3-3",
                 "Description": "3 year (3-3-3) limited warranty and service offering includes 3 years of parts, labor and on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
+            },
+            {
+                "Product": "Workstations",
+                "Warranty": "4-4-4",
+                "Description": "4 year (4-4-4) limited warranty and service offering includes 4 years of parts, labor and on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
+            },
+            {
+                "Product": "Workstations",
+                "Warranty": "5-5-5",
+                "Description": "5 year (5-5-5) limited warranty and service offering includes 5 years of parts, labor and on-site repair. Terms and conditions vary by country. Certain restrictions and exclusions apply."
             }
         ]
     ]
