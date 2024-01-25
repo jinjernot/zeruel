@@ -38,7 +38,7 @@ def get_product(sku):
             if marketing_category == "Workstations":
                 marketing_sub_category = response_data["products"][sku]["productHierarchy"]["marketingSubCategory"].get("name")
                 
-                if marketing_sub_category == "HP Mobile Workstation":
+                if marketing_sub_category == "HP HP Mobile Workstation":
                     # Use marketing_sub_category value instead of marketing_category
                     api_data = marketing_sub_category
                 else:

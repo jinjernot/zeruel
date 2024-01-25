@@ -31,24 +31,23 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
         # Check if all necessary values are found
         if osinstalled_value and processorname_value and memstdes_01_value and hd_01des_value:
             name_value = row["Name"]
-            chunk_value = f"{name_value} with {osinstalled_value} {processorname_value} {memstdes_01_value} {hd_01des_value} Low halogen"
-
+            chunk_value = f"{name_value} with {osinstalled_value}, {processorname_value}, {memstdes_01_value}, {hd_01des_value} Low halogen"
             # Get data from API using the get_product function
             api_data = get_product(sku)
 
             # Check if api_data is not None before accessing its elements
             if api_data is not None:
-                # Create a row for prodlongname
-                prodlongname_row = {
+                # Create a row for proddiff_long
+                proddiff_long_row = {
                     "Sku": sku,
                     "Item_Id": row["Item_Id"],
                     "ItemLevel": "Product",
                     "CultureCode": "na-en",
                     "DataType": "Text",
-                    "Tag": "prodlongname",
+                    "Tag": "proddiff_long",
                     "ChunkValue": chunk_value
                 }
-                rows_to_insert.append(prodlongname_row)
+                rows_to_insert.append(proddiff_long_row)
 
                 if isinstance(api_data, dict):
                     chunk_value = api_data.get("name")
