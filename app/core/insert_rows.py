@@ -60,7 +60,7 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
                     "ItemLevel": "Product",
                     "CultureCode": "na-en",
                     "DataType": "Text",
-                    "Tag": "warranty_features",
+                    "Tag": "wrntyfeatures",
                     "ChunkValue": chunk_value
                 }
                 rows_to_insert.append(warranty_row)
@@ -88,8 +88,8 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
         chunk_value = row["ChunkValue"]
         tag = row["Tag"]
 
-        # Check if SKU exists in ms4_filtered_df and Tag is "warranty_features"
-        if tag == "warranty_features" and any(ms4_filtered_df["SKU"].str.contains(str(sku))):
+        # Check if SKU exists in ms4_filtered_df and Tag is "wrntyfeatures"
+        if tag == "wrntyfeatures" and any(ms4_filtered_df["SKU"].str.contains(str(sku))):
             
             # Check if ChunkValue matches any "Product" in the warranty_data
             matching_products = [product for warranty_list in warranty_data["warranty"] for product in warranty_list if product["Product"] == chunk_value]
