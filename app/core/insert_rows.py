@@ -27,11 +27,32 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
         processorname_value = get_container_value(df2, sku, "processorname")
         memstdes_01_value = get_container_value(df2, sku, "memstdes_01")
         hd_01des_value = get_container_value(df2, sku, "hd_01des")
+        hd_02des_value = get_container_value(df2, sku, "hd_02des")
+        hd_03des_value = get_container_value(df2, sku, "hd_03des")
 
-        # Check if all necessary values are found
-        if osinstalled_value and processorname_value and memstdes_01_value and hd_01des_value:
+        # Check if all necessary values are found and hd_01des_value is not blank
+        if (osinstalled_value is not None) and \
+        (processorname_value is not None) and \
+        (memstdes_01_value is not None) and \
+        (hd_01des_value is not None) and \
+        (hd_01des_value.strip() != ""):
             name_value = row["Name"]
-            chunk_value = f"{name_value} with {osinstalled_value}, {processorname_value}, {memstdes_01_value}, {hd_01des_value} Low halogen"
+            chunk_value = f"{name_value} with {osinstalled_value}, {processorname_value}, {memstdes_01_value}"
+
+            # Append hd_02des_value if available and not equal to "[BLANK]" or None
+            if hd_01des_value not in ("[BLANK]", None):
+                chunk_value += f", {hd_01des_value}"
+
+            # Append hd_02des_value if available and not equal to "[BLANK]" or None
+            if hd_02des_value not in ("[BLANK]", None):
+                chunk_value += f", {hd_02des_value}"
+
+            # Append hd_03des_value if available and not equal to "[BLANK]" or None
+            if hd_03des_value not in ("[BLANK]", None):
+                chunk_value += f", {hd_03des_value}"
+
+            chunk_value += " Low halogen"
+            
             # Get data from API using the get_product function
             api_data = get_product(sku)
 
