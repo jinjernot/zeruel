@@ -30,7 +30,7 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
         hd_02des_value = get_container_value(df2, sku, "hd_02des")
         hd_03des_value = get_container_value(df2, sku, "hd_03des")
 
-        # Check if all necessary values are found and hd_01des_value is not blank
+        # Check if all necessary values are found
         if (osinstalled_value is not None) and \
         (processorname_value is not None) and \
         (memstdes_01_value is not None) and \
@@ -51,7 +51,8 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
             if hd_03des_value not in ("[BLANK]", None):
                 chunk_value += f", {hd_03des_value}"
 
-            chunk_value += " Low halogen"
+            # Add Low halogen
+            chunk_value += ", Low halogen"
             
             # Get data from API using the get_product function
             api_data = get_product(sku)

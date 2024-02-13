@@ -7,8 +7,8 @@ def main():
 
     try:
         # Load Excel files
-        df1 = pd.read_excel(file1_path)
-        df2 = pd.read_excel(file2_path)
+        df1 = pd.read_excel(file1_path) # QR
+        df2 = pd.read_excel(file2_path) # SCS
 
         # Insert rows
         insert_rows(df1, df2)
