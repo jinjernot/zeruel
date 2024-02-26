@@ -6,3 +6,4 @@ venv
 certificates
 config.py
 *.txt
+zeruel_env
