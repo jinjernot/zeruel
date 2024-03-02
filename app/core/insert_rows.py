@@ -1,12 +1,23 @@
+# Import necessary modules
 from app.core.get_container_value import *
 from app.core.get_product import *
-
 from openpyxl.styles import Font
 import pandas as pd
+import json
 
 def insert_rows(df1, df2, output_file="PCCS.xlsx"):
-    """Create a new dataframe with the values found in both reports, insert the productlongname and warranty values"""
+    """
+    Create a new dataframe with the values found in both reports, insert the productlongname and warranty values.
 
+    Args:
+        df1 (DataFrame): First DataFrame containing product information.
+        df2 (DataFrame): Second DataFrame containing product information.
+        output_file (str): Output filename for the resulting Excel file. Default is "PCCS.xlsx".
+
+    Returns:
+        None
+    """
+    
     # Merge dfs
     merged_df = pd.merge(df1, df2, left_on="Sku", right_on="SKU", how="inner")
 
@@ -14,7 +25,7 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
     rows_to_insert = []
     processed_skus = set()
 
-# Iterate through "merged_df"
+    # Iterate through "merged_df"
     for _, row in merged_df.iterrows():
         sku = row["Sku"]
 
