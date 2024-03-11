@@ -3,7 +3,16 @@ import requests
 import json
 
 def get_product(sku):
-    """Get products from API"""
+    """
+    Get products from the API.
+
+    Args:
+        sku (str): The product SKU.
+
+    Returns:
+        str: The marketing category or sub-category of the product.
+            Returns None if there's an error.
+    """
     try:
         ca_cert = ca_cert_path
         client_cert = (client_cert_path, client_key_path)
@@ -26,29 +35,26 @@ def get_product(sku):
         )
 
         if response.status_code == 200:
-            # Save the response to a JSON file
-            #json_filename = f"response_{sku}.json"
-            #with open(json_filename, 'w') as json_file:
-            #    json.dump(response.json(), json_file)
-
             response_data = response.json()
-        
-            marketing_category = response_data["products"][sku]["productHierarchy"]["marketingCategory"].get("name")
+            product_info = response_data.get("products", {}).get(sku, {}).get("productHierarchy", {})
+            marketing_category = product_info.get("marketingCategory", {}).get("name")
 
             if marketing_category == "Workstations":
-                marketing_sub_category = response_data["products"][sku]["productHierarchy"]["marketingSubCategory"].get("name")
+                marketing_sub_category = product_info.get("marketingSubCategory", {}).get("name")
                 
                 if marketing_sub_category == "HP HP Mobile Workstation":
-                    # Use marketing_sub_category value instead of marketing_category
-                    api_data = marketing_sub_category
+                    return marketing_sub_category
                 else:
-                    api_data = marketing_category
+                    return marketing_category
             else:
-                api_data = marketing_category
-            return api_data
-
+                return marketing_category
         else:
             print(f"Request failed with status code {response.status_code}")
             print(f"Response: {response.text}")
+            return None
+    except requests.RequestException as e:
+        print(f"Request failed: {e}")
+        return None
     except Exception as e:
         print(f"Error: {e}")
+        return None
