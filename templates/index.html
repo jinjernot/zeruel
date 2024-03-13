@@ -14,7 +14,7 @@
 
             <div class="upload-container">
                 <h3>Select report file:</h3>
-                <form method="POST" enctype="multipart/form-data" action="{{ url_for('generate_docx') }}">
+                <form method="POST" enctype="multipart/form-data" action="{{ url_for('generate_xlsx') }}">
                     <input type="file" name="MAT" class="custom-input" multiple="true">
                     <br>
                     <input type="submit" value="Upload" class="button">

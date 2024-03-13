@@ -5,7 +5,7 @@ from openpyxl.styles import Font
 import pandas as pd
 import json
 
-def insert_rows(df1, df2, output_file="PCCS.xlsx"):
+def insert_rows(file, output_file="PCCS.xlsx"):
     """
     Create a new dataframe with the values found in both reports, insert the productlongname and warranty values.
 
@@ -17,7 +17,9 @@ def insert_rows(df1, df2, output_file="PCCS.xlsx"):
     Returns:
         None
     """
-    
+    df1 = pd.read_excel(file, sheet_name='PRISM QUERY', engine='openpyxl')
+    df2 = pd.read_excel(file, sheet_name='SCS', engine='openpyxl')
+
     # Merge dfs
     merged_df = pd.merge(df1, df2, left_on="Sku", right_on="SKU", how="inner")
 

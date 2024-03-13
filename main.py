@@ -1,20 +1,43 @@
-import pandas as pd
-from app.core.insert_rows import *
 
-def main():
-    file1_path = "./docs/QueryReport.xlsx"
-    file2_path = "./docs/SCS.xlsx"
+from flask import Flask, request, render_template, send_from_directory
+from app.core.insert_rows import insert_rows
+from app.config import config
 
-    try:
-        # Load Excel files
-        df1 = pd.read_excel(file1_path) # QR
-        df2 = pd.read_excel(file2_path) # SCS
+app = Flask(__name__)
+app.use_static_for = 'static'
 
-        # Insert rows
-        insert_rows(df1, df2)
+# Configuration
+app.config.from_object(config)
 
-    except Exception as e:
-        print(f"Error: {e}")
+###############################
+### Validate file extension ###
+###############################
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['VALID_FILE_EXTENSIONS']
+
+###############################
+### Validate file extension ###
+###############################
+
+@app.route('/app5')
+def index():
+    """Homepage with a button to generate DOCX files"""
+    return render_template('index.html')    
+
+@app.route('/pccs/generate_file', methods=['POST'])
+def generate_xlsx():
+    
+    if 'MAT' in request.files:
+        file = request.files['MAT']
+        try:
+            if allowed_file(file.filename):
+                insert_rows(file)
+                return send_from_directory('.', 'PCCS.xlsx', as_attachment=True)
+        except Exception as e:
+            print(e)
+            return render_template('error.html'), 500
+    return render_template('error.html'), 400
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)
