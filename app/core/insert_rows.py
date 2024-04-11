@@ -111,7 +111,7 @@ def insert_rows(file, output_file="PCCS.xlsx"):
     pccs_df = pd.DataFrame(rows_to_insert)
 
     # Read data from "ms4_filtered.xlsx"
-    ms4_filtered_df = pd.read_excel("ms4_filtered.xlsx")
+    ms4_filtered_df = pd.read_excel(file, sheet_name='MS4', engine='openpyxl')
 
     # Load warranty data from JSON file
     with open('data/warranty.json', 'r') as json_file:
@@ -135,7 +135,7 @@ def insert_rows(file, output_file="PCCS.xlsx"):
                 
                 # Additional check: Check if "Warranty" value is present in "DESCRIPTION" column of ms4_filtered_df
                 warranty_value = matching_products[0]["Warranty"]
-                if any(ms4_filtered_df["DESCRIPTION"].str.contains(warranty_value)):
+                if any(ms4_filtered_df["DESCRIPTION                             "].str.contains(warranty_value)):
                     pccs_df.at[index, "ChunkValue"] = description
 
     pccs_df['ChunkStatus'] = 'F'
