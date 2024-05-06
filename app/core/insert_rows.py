@@ -5,20 +5,16 @@ from openpyxl.styles import Font
 import pandas as pd
 import json
 
-def insert_rows(file, output_file="PCCS.xlsx"):
+def insert_rows(file, output_file="/opt/ais/app/python/pccs/PCCS.xlsx"):
     """
     Create a new dataframe with the values found in both reports, insert the productlongname and warranty values.
 
-    Args:
-        df1 (DataFrame): First DataFrame containing product information.
-        df2 (DataFrame): Second DataFrame containing product information.
-        output_file (str): Output filename for the resulting Excel file. Default is "PCCS.xlsx".
-
-    Returns:
-        None
     """
-    df1 = pd.read_excel(file, sheet_name='PRISM QUERY', engine='openpyxl')
-    df2 = pd.read_excel(file, sheet_name='SCS', engine='openpyxl')
+    #df1 = pd.read_excel(file, sheet_name='PRISM QUERY', engine='openpyxl')
+    #df2 = pd.read_excel(file, sheet_name='SCS', engine='openpyxl')
+
+    df1 = pd.read_excel(file.stream, sheet_name='PRISM QUERY', engine='openpyxl')
+    df2 = pd.read_excel(file.stream, sheet_name='SCS', engine='openpyxl')
 
     # Merge dfs
     merged_df = pd.merge(df1, df2, left_on="Sku", right_on="SKU", how="inner")
@@ -102,8 +98,8 @@ def insert_rows(file, output_file="PCCS.xlsx"):
 
                 # Add sku to the set of processed values
                 processed_skus.add(sku)
-            else:
-                print(f"Missing SKU: {sku}. Skipping...")
+            #else:
+                #print(f"Missing SKU: {sku}. Skipping...")
             # Add sku to the set of processed values
             processed_skus.add(sku)
 
@@ -111,10 +107,12 @@ def insert_rows(file, output_file="PCCS.xlsx"):
     pccs_df = pd.DataFrame(rows_to_insert)
 
     # Read data from "ms4_filtered.xlsx"
-    ms4_filtered_df = pd.read_excel(file, sheet_name='MS4', engine='openpyxl')
+    #ms4_filtered_df = pd.read_excel(file, sheet_name='MS4', engine='openpyxl')
+    ms4_filtered_df = pd.read_excel(file.stream, sheet_name='MS4', engine='openpyxl')
 
     # Load warranty data from JSON file
-    with open('data/warranty.json', 'r') as json_file:
+    #with open('data/warranty.json', 'r') as json_file:
+    with open('/opt/ais/app/python/pccs/data/warranty.json', 'r') as json_file:
         warranty_data = json.load(json_file)
 
     # Iterate through the rows in pccs_df

@@ -5,16 +5,8 @@ import json
 def get_product(sku):
     """
     Get products from the API.
-
-    Args:
-        sku (str): The product SKU.
-
-    Returns:
-        str: The marketing category or sub-category of the product.
-            Returns None if there's an error.
     """
     try:
-        ca_cert = ca_cert_path
         client_cert = (client_cert_path, client_key_path)
 
         json_data = {
@@ -29,7 +21,7 @@ def get_product(sku):
         response = requests.post(
             url,
             cert=client_cert,
-            verify=ca_cert,
+            verify=False,
             headers={'Content-Type': 'application/json'},
             data=json.dumps(json_data)
         )
