@@ -3,6 +3,9 @@ from flask import Flask, request, render_template, send_from_directory
 from app.core.insert_rows import insert_rows
 from app.config import config
 
+from flask import send_file
+from io import BytesIO
+
 app = Flask(__name__)
 app.use_static_for = 'static'
 
@@ -25,15 +28,17 @@ def index():
     """Homepage with a button to generate DOCX files"""
     return render_template('index.html')    
 
-@app.route('/pccs/generate_file', methods=['POST'])
-def generate_xlsx():
+@app.route('/generate_file', methods=['POST'])
+def generate_file():
     
     if 'MAT' in request.files:
         file = request.files['MAT']
         try:
             if allowed_file(file.filename):
-                insert_rows(file)
-                return send_from_directory('.', 'PCCS.xlsx', as_attachment=True)
+                output_buffer = BytesIO()
+                insert_rows(file, output_buffer=output_buffer)
+                output_buffer.seek(0)
+                return send_file(output_buffer, attachment_filename='pccs.xlsx', as_attachment=True)
         except Exception as e:
             print(e)
             return render_template('error.html'), 500
