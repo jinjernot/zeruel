@@ -45,8 +45,8 @@ def insert_rows(file, output_buffer=None):
             reason.append("hd_01des is blank")
 
         if reason:
-            sku_value = row["Sku"]
-            chunk_value = f"{sku_value} - Unprocessed due to: {', '.join(reason)}"
+            name_value = row["Name"]
+            chunk_value = f"{name_value} - Unprocessed due to: {', '.join(reason)}"
             proddiff_long_row = {
                 "Sku": sku,
                 "Item_Id": row["Item_Id"],
@@ -106,30 +106,41 @@ def insert_rows(file, output_buffer=None):
     # Remove duplicate rows
     pccs_df = pd.DataFrame(rows_to_insert).drop_duplicates()
 
+    # Load the MS4 sheet and warranty data
     ms4_filtered_df = pd.read_excel(file.stream, sheet_name='MS4', engine='openpyxl')
+    
+    # Clean up SKU values in ms4_filtered_df
+    ms4_filtered_df['SKU                                     '] = ms4_filtered_df['SKU                                     '].str.replace(r'#.*$', '', regex=True)
 
     with open('/opt/ais/app/python/pccs/data/warranty.json', 'r') as json_file:
         warranty_data = json.load(json_file)
 
+    # Iterate through pccs_df and check warranty information
     for index, row in pccs_df.iterrows():
         sku = row["Sku"]
         chunk_value = row["ChunkValue"]
         tag = row["Tag"]
 
-        if tag == "wrntyfeatures" and any(ms4_filtered_df["SKU"].str.contains(str(sku))):
-            
-            matching_products = [product for warranty_list in warranty_data["warranty"] for product in warranty_list if product["Product"] == chunk_value]
-            
-            if matching_products:
-                description = matching_products[0]["Description"]
+        # Validate if SKU exists in both ms4_filtered_df and merged_df
+        if tag == "wrntyfeatures":
+            if sku in ms4_filtered_df["SKU                                     "].values and sku in merged_df["Sku"].values:
+                # Find matching product in warranty data
+                matching_products = [product for warranty_list in warranty_data["warranty"] for product in warranty_list if product["Product"] == chunk_value]
                 
-                warranty_value = matching_products[0]["Warranty"]
-                if any(ms4_filtered_df["DESCRIPTION                             "].str.contains(warranty_value)):
-                    pccs_df.at[index, "ChunkValue"] = description
+                if matching_products:
+                    description = matching_products[0]["Description"]
+                    
+                    warranty_value = matching_products[0]["Warranty"]
+                    if any(ms4_filtered_df["DESCRIPTION                             "].str.contains(warranty_value)):
+                        pccs_df.at[index, "ChunkValue"] = description
+                else:
+                    # If no matching product found, append the reason to the existing ChunkValue
+                    reason = "No warranty information available"
+                    pccs_df.at[index, "ChunkValue"] = f"{chunk_value}, {reason}"
             else:
-                # If no matching product found, append the reason to the existing ChunkValue
-                reason = "No warranty information available"
-                pccs_df.at[index, "ChunkValue"] = f"{chunk_value}, {reason}"
+                # If SKU does not exist in either DataFrame, append the reason
+                reason = "SKU not found in MS4 report"
+                pccs_df.at[index, "ChunkValue"] = f"{sku}, {reason}"
 
     pccs_df['ChunkStatus'] = 'F'
     pccs_df['SourceLevel'] = ''
@@ -152,6 +163,6 @@ def insert_rows(file, output_buffer=None):
 
             for row in worksheet.iter_rows(min_row=2, max_row=worksheet.max_row, min_col=1, max_col=worksheet.max_column):
                 for cell in row:
-                    if "Unprocessed due to" in str(cell.value) or "No warranty information available" in str(cell.value):
+                    if "Unprocessed due to" in str(cell.value) or "No warranty information available" in str(cell.value) or "SKU not found in MS4 report" in str(cell.value):
                         cell.fill = error_fill
                         cell.font = error_font
