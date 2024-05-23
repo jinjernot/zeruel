@@ -1,6 +1,6 @@
 from app.core.get_container_value import *
 from app.core.get_product import *
-from openpyxl.styles import Font
+from openpyxl.styles import Font, PatternFill
 
 import pandas as pd
 import json
@@ -16,6 +16,7 @@ def insert_rows(file, output_buffer=None):
 
     rows_to_insert = []
     processed_skus = set()
+    errors = []
 
     for _, row in merged_df.iterrows():
         sku = row["Sku"]
@@ -30,11 +31,34 @@ def insert_rows(file, output_buffer=None):
         hd_02des_value = get_container_value(df2, sku, "hd_02des")
         hd_03des_value = get_container_value(df2, sku, "hd_03des")
 
-        if (osinstalled_value is not None) and \
-        (processorname_value is not None) and \
-        (memstdes_01_value is not None) and \
-        (hd_01des_value is not None) and \
-        (hd_01des_value.strip() != ""):
+        reason = []
+
+        if osinstalled_value is None:
+            reason.append("osinstalled is None")
+        if processorname_value is None:
+            reason.append("processorname is None")
+        if memstdes_01_value is None:
+            reason.append("memstdes_01 is None")
+        if hd_01des_value is None:
+            reason.append("hd_01des is None")
+        if hd_01des_value is not None and hd_01des_value.strip() == "":
+            reason.append("hd_01des is blank")
+
+        if reason:
+            sku_value = row["Sku"]
+            chunk_value = f"{sku_value} - Unprocessed due to: {', '.join(reason)}"
+            proddiff_long_row = {
+                "Sku": sku,
+                "Item_Id": row["Item_Id"],
+                "ItemLevel": "Product",
+                "CultureCode": "na-en",
+                "DataType": "Text",
+                "Tag": "proddiff_long",
+                "ChunkValue": chunk_value
+            }
+            rows_to_insert.append(proddiff_long_row)
+            errors.append(proddiff_long_row)
+        else:
             name_value = row["Name"]
             chunk_value = f"{name_value} with {osinstalled_value}, {processorname_value}, {memstdes_01_value}"
 
@@ -79,7 +103,8 @@ def insert_rows(file, output_buffer=None):
 
                 processed_skus.add(sku)
 
-    pccs_df = pd.DataFrame(rows_to_insert)
+    # Remove duplicate rows
+    pccs_df = pd.DataFrame(rows_to_insert).drop_duplicates()
 
     ms4_filtered_df = pd.read_excel(file.stream, sheet_name='MS4', engine='openpyxl')
 
@@ -101,17 +126,32 @@ def insert_rows(file, output_buffer=None):
                 warranty_value = matching_products[0]["Warranty"]
                 if any(ms4_filtered_df["DESCRIPTION                             "].str.contains(warranty_value)):
                     pccs_df.at[index, "ChunkValue"] = description
+            else:
+                # If no matching product found, append the reason to the existing ChunkValue
+                reason = "No warranty information available"
+                pccs_df.at[index, "ChunkValue"] = f"{chunk_value}, {reason}"
 
     pccs_df['ChunkStatus'] = 'F'
     pccs_df['SourceLevel'] = ''
     pccs_df['SourceCulture'] = ''
- 
+
     if output_buffer:
         with pd.ExcelWriter(output_buffer, engine='openpyxl') as writer:
-            pccs_df.to_excel(writer, index=False, sheet_name='Sheet1')
+            pccs_df.to_excel(writer, index=False, sheet_name='Processed_SKUs')
 
             workbook = writer.book
-            worksheet = writer.sheets['Sheet1']
 
-            for cell in worksheet["1:1"]:
-                cell.font = Font(bold=True)
+            for sheet in workbook.sheetnames:
+                worksheet = writer.sheets[sheet]
+                for cell in worksheet["1:1"]:
+                    cell.font = Font(bold=True)
+
+            # Add errors in red font
+            error_fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+            error_font = Font(color="9C0006")
+
+            for row in worksheet.iter_rows(min_row=2, max_row=worksheet.max_row, min_col=1, max_col=worksheet.max_column):
+                for cell in row:
+                    if "Unprocessed due to" in str(cell.value) or "No warranty information available" in str(cell.value):
+                        cell.fill = error_fill
+                        cell.font = error_font
