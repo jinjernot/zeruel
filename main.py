@@ -1,5 +1,5 @@
 
-from flask import Flask, request, render_template, send_from_directory
+from flask import Flask, request, render_template
 from app.core.insert_rows import insert_rows
 from app.config import config
 

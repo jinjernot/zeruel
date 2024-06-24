@@ -1,22 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Error</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Error page</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+   <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 <body>
-
-<header class="heading">
-    <h2 class="">ERROR</h2>
-    <h1 class="">Invalid file</h1>
-
-    
-</header>
-
-<div class="image-container">
-<img src="{{ url_for('static', filename='images/favicon.png') }}" alt="" width="50" height="50">
-</div>
+   <div id="error-message">
+      <center><h1> (╯°□°)╯︵ ɹoɹɹƎ </h1></center>
+      <br>
+      <center><p>{{ error_message }}</p></center>
+   </div>
 </body>
 </html>
-
-

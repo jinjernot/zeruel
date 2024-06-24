@@ -145,3 +145,16 @@
     margin-left: 15%;
     margin-right: 15%;
 }
+
+#error-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  font-size: 2rem;
+  flex-direction: column;
+}
+
+#error-message h1 {
+  margin-bottom: 20px;
+}
