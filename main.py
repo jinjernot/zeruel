@@ -24,8 +24,8 @@ def index():
 @app.route('/generate_file', methods=['POST'])
 def generate_file():
     
-    if 'MAT' in request.files:
-        file = request.files['MAT']
+    if 'pccs' in request.files:
+        file = request.files['pccs']
         try:
             if allowed_file(file.filename):
                 output_buffer = BytesIO()
