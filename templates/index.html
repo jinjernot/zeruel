@@ -73,26 +73,31 @@
       <div class="main-panel">
          <div class="content">
             <div class="container-fluid">
-               <h4 class="page-title">!</h4>
+               <h4 class="page-title">PCCS Tool</h4>
                <div class="row">
+
                   <div class="col-md-4">
                      <div class="card">
                         <div class="card-header">
-                           <div class="card-title">
-                              <center>(╯°□°)╯︵ ɹoɹɹƎ</center>
-                           </div>
+                           <div class="card-title">Report</div>
                         </div>
                         <div class="card-body">
-                           <div id="monthlyChart">
-                              <center>
-                                 <p>{{ error_message }}</p>
-                              </center>
-                           </div>
+                           <form action="pccs" name="pccs" method="POST" enctype="multipart/form-data">
+                              <div class="form-group">
+                                 <label for="scs_regular">Please upload XLSX file</label>
+                                 <input type="file" class="form-control-file" id="scs_regular" name="scs_regular">
+                              </div>
                         </div>
+                        <div class="card-action"><button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                        </form>
                      </div>
                   </div>
+
+
                </div>
             </div>
+
          </div>
          <footer class="footer">
             <div class="container-fluid">
