@@ -9,7 +9,7 @@ from io import BytesIO
 app = Flask(__name__)
 app.use_static_for = 'static'
 
-# Configuration
+# Load config
 app.config.from_object(config)
 
 # Validate file extension
@@ -18,12 +18,10 @@ def allowed_file(filename):
 
 @app.route('/app5')
 def index():
-    """Homepage with a button to generate DOCX files"""
     return render_template('index.html')    
 
-@app.route('/generate_file', methods=['POST'])
-def generate_file():
-    
+@app.route('/generate_file', methods=['GET', 'POST'])
+def generate_file_route():
     if 'pccs' in request.files:
         file = request.files['pccs']
         try:
@@ -33,9 +31,8 @@ def generate_file():
                 output_buffer.seek(0)
                 return send_file(output_buffer, attachment_filename='pccs.xlsx', as_attachment=True)
         except Exception as e:
-            print(e)
-            return render_template('error.html'), 500
-    return render_template('error.html'), 400
+            return render_template('error.html', error_message=str(e)), 500  # Render error template for server errors
+    return render_template('error.html', error_message='Invalid file extension'), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
