@@ -1,4 +1,4 @@
-from app.config.config import *
+from config import *
 import requests
 import json
 

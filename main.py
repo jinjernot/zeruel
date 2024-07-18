@@ -1,15 +1,12 @@
-
 from flask import Flask, request, render_template
 from app.core.insert_rows import insert_rows
-from . import config
-
 from flask import send_file
 from io import BytesIO
 
+import config
+
 app = Flask(__name__)
 app.use_static_for = 'static'
-
-# Load config
 app.config.from_object(config)
 
 # Validate file extension
