@@ -1,7 +1,4 @@
-from flask import Flask, request, render_template
-from app.core.insert_rows import insert_rows
-from flask import send_file
-from io import BytesIO
+from flask import Flask, render_template
 
 import config
 
@@ -16,20 +13,6 @@ def allowed_file(filename):
 @app.route('/app5')
 def index():
     return render_template('index.html')    
-
-@app.route('/generate_file', methods=['GET', 'POST'])
-def generate_file_route():
-    if 'pccs' in request.files:
-        file = request.files['pccs']
-        try:
-            if allowed_file(file.filename):
-                output_buffer = BytesIO()
-                insert_rows(file, output_buffer=output_buffer)
-                output_buffer.seek(0)
-                return send_file(output_buffer, attachment_filename='pccs.xlsx', as_attachment=True)
-        except Exception as e:
-            return render_template('error.html', error_message=str(e)), 500  # Render error template for server errors
-    return render_template('error.html', error_message='Invalid file extension'), 400
 
 if __name__ == "__main__":
     app.run(debug=True)

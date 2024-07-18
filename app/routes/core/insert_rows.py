@@ -1,5 +1,5 @@
-from app.core.get_container_value import *
-from app.core.get_product import *
+from app.routes.core.get_container_value import *
+from app.routes.core.get_product import *
 from openpyxl.styles import Font, PatternFill
 
 import pandas as pd
