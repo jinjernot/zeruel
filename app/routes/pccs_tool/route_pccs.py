@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 
-from app.routes.core.insert_rows import insert_rows
+from app.routes.pccs_tool.core.insert_rows import insert_rows
 from flask import send_file
 from io import BytesIO
 
@@ -17,8 +17,7 @@ app.config.from_object(config)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['VALID_FILE_EXTENSIONS']
 
-@app.route('/generate_file', methods=['GET', 'POST'])
-def generate_file_route():
+def pccs_tool():
     if 'pccs' in request.files:
         file = request.files['pccs']
         try:

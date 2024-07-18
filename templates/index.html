@@ -2,7 +2,7 @@
 
 <head>
    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-   <title>FRAME</title>
+   <title>FRAME - PCCS Tool</title>
    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
       name='viewport' />
    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
@@ -42,7 +42,7 @@
                      <p>Quickspecs Builder</p>
                   </a>
                </li>
-               <li class="nav-item active">
+               <li class="nav-item">
                   <a href="https://synd.inc.hp.com/frame/image_tool">
                      <p>Image Toolbox</p>
                   </a>
@@ -52,7 +52,7 @@
                      <p>CROME</p>
                   </a>
                </li>
-               <li class="nav-item">
+               <li class="nav-item active">
                   <a href="https://g8t11912g.inc.hpicorp.net/app/pccs/app5">
                      <p>PCCS Tool</p>
                   </a>
@@ -82,7 +82,7 @@
                            <div class="card-title">Report</div>
                         </div>
                         <div class="card-body">
-                           <form action="generate_file" name="pccs" method="POST" enctype="multipart/form-data">
+                           <form action="pccs_tool" name="pccs" method="POST" enctype="multipart/form-data">
                               <div class="form-group">
                                  <label for="pccs">Please upload XLSX file</label>
                                  <input type="file" class="form-control-file" id="pccs" name="pccs">
