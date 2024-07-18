@@ -4,13 +4,22 @@ from openpyxl.styles import Font, PatternFill
 
 import pandas as pd
 import json
+import io
+
+from config import WARRANTY_PATH
 
 def insert_rows(file, output_buffer=None):
     """
     Create a new dataframe with the values found in both reports, insert the productlongname and warranty values.
     """
-    df1 = pd.read_excel(file.stream, sheet_name='PRISM QUERY', engine='openpyxl')
-    df2 = pd.read_excel(file.stream, sheet_name='SCS', engine='openpyxl')
+    # Read the file content into a BytesIO object
+    file_content = io.BytesIO(file.read())
+
+    # Read the sheets into dataframes
+    df1 = pd.read_excel(file_content, sheet_name='PRISM QUERY', engine='openpyxl')
+    file_content.seek(0)  # Reset the BytesIO object to the beginning
+    df2 = pd.read_excel(file_content, sheet_name='SCS', engine='openpyxl')
+    file_content.seek(0)  # Reset the BytesIO object to the beginning again
 
     merged_df = pd.merge(df1, df2, left_on="Sku", right_on="SKU", how="inner")
 
@@ -107,12 +116,13 @@ def insert_rows(file, output_buffer=None):
     pccs_df = pd.DataFrame(rows_to_insert).drop_duplicates()
 
     # Load the MS4 sheet and warranty data
-    ms4_filtered_df = pd.read_excel(file.stream, sheet_name='MS4', engine='openpyxl')
+    file_content.seek(0)  # Reset the BytesIO object to the beginning again
+    ms4_filtered_df = pd.read_excel(file_content, sheet_name='MS4', engine='openpyxl')
     
     # Clean up SKU values in ms4_filtered_df
     ms4_filtered_df['SKU                                     '] = ms4_filtered_df['SKU                                     '].str.replace(r'#.*$', '', regex=True)
 
-    with open('/opt/ais/app/python/pccs/data/warranty.json', 'r') as json_file:
+    with open(WARRANTY_PATH, 'r') as json_file:
         warranty_data = json.load(json_file)
 
     # Iterate through pccs_df and check warranty information

@@ -1,7 +1,7 @@
 
 from flask import Flask, request, render_template
 from app.core.insert_rows import insert_rows
-from app.config import config
+from . import config
 
 from flask import send_file
 from io import BytesIO
