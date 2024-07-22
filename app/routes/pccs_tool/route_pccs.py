@@ -4,6 +4,8 @@ from app.routes.pccs_tool.core.insert_rows import insert_rows
 from flask import send_file
 from io import BytesIO
 
+from config import XLSX_TEMPLATE_PATH
+
 import config
 
 # Create a Flask app
@@ -22,10 +24,8 @@ def pccs_tool():
         file = request.files['pccs']
         try:
             if allowed_file(file.filename):
-                output_buffer = BytesIO()
-                insert_rows(file, output_buffer=output_buffer)
-                output_buffer.seek(0)
-                return send_file(output_buffer, attachment_filename='pccs.xlsx', as_attachment=True)
+                insert_rows(file)
+                return send_file(XLSX_TEMPLATE_PATH, attachment_filename='pccs.xlsx', as_attachment=True)
         except Exception as e:
             return render_template('error.html', error_message=str(e)), 500  # Render error template for server errors
     return render_template('error.html', error_message='Invalid file extension'), 400

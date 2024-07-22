@@ -1,139 +1,112 @@
 <html>
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>FRAME - PCCS Tool</title>
-    <meta
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
-      name="viewport"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/ready.css') }}"
-    />
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="{{ url_for('static', filename='images/favicon.ico') }}"
-    />
-  </head>
 
-  <body>
-    <div class="wrapper">
-      <div class="main-header">
-        <div class="logo-header">
-          FRAME
-          <button
-            class="navbar-toggler sidenav-toggler ml-auto"
-            type="button"
-            data-toggle="collapse"
-            data-target="collapse"
-            aria-controls="sidebar"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </div>
-      </div>
-      <div class="sidebar">
-        <div class="scrollbar-inner sidebar-wrapper">
-          <ul class="nav">
-            <li class="nav-item">
-              <a href="https://synd.inc.hp.com/frame/main">
-                <p>Home</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="https://synd.inc.hp.com/frame/scs_tool">
-                <p>SCS QA Tool</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="https://synd.inc.hp.com/frame/qs_tool">
-                <p>Quickspecs Builder</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="https://synd.inc.hp.com/frame/image_tool">
-                <p>Image Toolbox</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="https://synd.inc.hp.com/frame/ds_tool">
-                <p>CROME</p>
-              </a>
-            </li>
-            <li class="nav-item active">
-              <a href="https://g8t11912g.inc.hpicorp.net/app/pccs/app5">
-                <p>PCCS Tool</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="https://g8t11912g.inc.hpicorp.net/app/contentcraft/main">
-                <p>Content Craft</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="https://synd.inc.hp.com/frame/faq">
-                <p>FAQ</p>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="main-panel">
-        <div class="content">
-          <div class="container-fluid">
-            <h4 class="page-title">PCCS Tool</h4>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Report</div>
-                  </div>
-                  <div class="card-body">
-                    <form
-                      action="pccs_tool"
-                      name="pccs"
-                      method="POST"
-                      enctype="multipart/form-data"
-                    >
-                      <div class="form-group">
-                        <label for="pccs">Please upload XLSX file</label>
-                        <input
-                          type="file"
-                          class="form-control-file"
-                          id="pccs"
-                          name="pccs"
-                        />
-                      </div>
-                      <div class="card-action">
-                        <button type="submit" class="btn btn-success">
-                          Submit
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <footer class="footer">
-          <div class="container-fluid">
-            <nav class="pull-left">
-              <ul class="nav"></ul>
-            </nav>
-            <div class="copyright ml-auto">
-              HP Inc. Restricted, Copyright 2024 HP Inc. Company.
-            </div>
-          </div>
-        </footer>
-      </div>
-    </div>
-  </body>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>FRAME - PCCS Tool</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+		name="viewport" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/ready.css') }}" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+</head>
+
+<body>
+	<div class="wrapper">
+		<div class="main-header">
+			<div class="logo-header">
+				FRAME
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+					data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</div>
+		</div>
+		<div class="sidebar">
+			<div class="scrollbar-inner sidebar-wrapper">
+				<ul class="nav">
+					<li class="nav-item">
+						<a href="https://synd.inc.hp.com/frame/main">
+							<p>Home</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="https://synd.inc.hp.com/frame/scs_tool">
+							<p>SCS QA Tool</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="https://synd.inc.hp.com/frame/qs_tool">
+							<p>Quickspecs Builder</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="https://synd.inc.hp.com/frame/image_tool">
+							<p>Image Toolbox</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="https://synd.inc.hp.com/frame/ds_tool">
+							<p>CROME</p>
+						</a>
+					</li>
+					<li class="nav-item active">
+						<a href="https://g8t11912g.inc.hpicorp.net/app/pccs/app5">
+							<p>PCCS Tool</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="https://g8t11912g.inc.hpicorp.net/app/contentcraft/main">
+							<p>Content Craft</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="https://synd.inc.hp.com/frame/faq">
+							<p>FAQ</p>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="main-panel">
+			<div class="content">
+				<div class="container-fluid">
+					<h4 class="page-title">PCCS Tool</h4>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">Report</div>
+								</div>
+								<div class="card-body">
+									<form action="pccs_tool" name="pccs" method="POST" enctype="multipart/form-data">
+										<div class="form-group">
+											<label for="pccs">Please upload XLSX file</label>
+											<input type="file" class="form-control-file" id="pccs" name="pccs" />
+										</div>
+										<div class="card-action">
+											<button type="submit" class="btn btn-success">
+												Submit
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="footer">
+				<div class="container-fluid">
+					<nav class="pull-left">
+						<ul class="nav"></ul>
+					</nav>
+					<div class="copyright ml-auto">
+						HP Inc. Restricted, Copyright 2024 HP Inc. Company.
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+</body>
+
 </html>

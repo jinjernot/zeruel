@@ -6,9 +6,9 @@ import pandas as pd
 import json
 import io
 
-from config import WARRANTY_PATH
+from config import WARRANTY_PATH, XLSX_TEMPLATE_PATH
 
-def insert_rows(file, output_buffer=None):
+def insert_rows(file):
     """
     Create a new dataframe with the values found in both reports, insert the productlongname and warranty values.
     """
@@ -156,23 +156,24 @@ def insert_rows(file, output_buffer=None):
     pccs_df['SourceLevel'] = ''
     pccs_df['SourceCulture'] = ''
 
-    if output_buffer:
-        with pd.ExcelWriter(output_buffer, engine='openpyxl') as writer:
-            pccs_df.to_excel(writer, index=False, sheet_name='Processed_SKUs')
+    #if output_buffer:
+    #with pd.ExcelWriter(output_buffer, engine='openpyxl') as writer:
+    with pd.ExcelWriter(XLSX_TEMPLATE_PATH, engine='openpyxl', mode='a') as writer:
+        pccs_df.to_excel(writer, index=False, sheet_name='CASChunks')
 
-            workbook = writer.book
+        workbook = writer.book
 
-            for sheet in workbook.sheetnames:
-                worksheet = writer.sheets[sheet]
-                for cell in worksheet["1:1"]:
-                    cell.font = Font(bold=True)
+        for sheet in workbook.sheetnames:
+            worksheet = writer.sheets[sheet]
+            for cell in worksheet["1:1"]:
+                cell.font = Font(bold=True)
 
             # Add errors in red font
-            error_fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
-            error_font = Font(color="9C0006")
+        error_fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+        error_font = Font(color="9C0006")
 
-            for row in worksheet.iter_rows(min_row=2, max_row=worksheet.max_row, min_col=1, max_col=worksheet.max_column):
-                for cell in row:
-                    if "Unprocessed due to" in str(cell.value) or "No warranty information available" in str(cell.value) or "SKU not found in MS4 report" in str(cell.value):
-                        cell.fill = error_fill
-                        cell.font = error_font
+        for row in worksheet.iter_rows(min_row=2, max_row=worksheet.max_row, min_col=1, max_col=worksheet.max_column):
+            for cell in row:
+                if "Unprocessed due to" in str(cell.value) or "No warranty information available" in str(cell.value) or "SKU not found in MS4 report" in str(cell.value):
+                    cell.fill = error_fill
+                    cell.font = error_font
