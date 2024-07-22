@@ -160,10 +160,6 @@ label {
   display: flex;
 }
 
-.ct-chart-pie .ct-label, .ct-chart-donut .ct-label {
-  dominant-baseline: central;
-}
-
 .ct-label.ct-horizontal.ct-start {
   -webkit-box-align: flex-end;
   -webkit-align-items: flex-end;
@@ -1918,8 +1914,6 @@ label {
   left: 0;
   transition: left .35s;
   -webkit-transition: left .35s;
-  -moz-user-select: none;
-  -webkit-user-select: none;
 }
 
 .toggle.off .toggle-group {
@@ -2030,7 +2024,6 @@ body {
   border-bottom: 1px solid #eee;
 }
 .main-header .logo-header {
-  float: left;
   width: 260px;
   height: 55px;
   line-height: 55px;
@@ -2064,6 +2057,12 @@ body {
   font-size: 26px;
   padding: 0;
   opacity: 0;
+}
+
+img.img-header {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
 }
 
 .sidebar {
@@ -2913,10 +2912,6 @@ body {
   margin-left: 0;
 }
 
-.profile-pic:hover, .profile-pic:focus {
-  text-decoration: none;
-}
-
 .navbar-header .dropdown-toggle::after {
   vertical-align: middle;
   color: #555;
@@ -2924,39 +2919,6 @@ body {
 
 .hidden-caret .dropdown-toggle::after {
   display: none !important;
-}
-
-.profile-pic .img-circle {
-  border-radius: 50%;
-}
-.profile-pic span {
-  font-size: 14px;
-  font-weight: 600;
-  padding: 0 10px;
-  color: #555;
-}
-
-/*     Nav Search     */
-.nav-search .input-group {
-  border: 1px solid #eee;
-  background: #eee;
-  border-radius: 50px;
-}
-.nav-search .input-group:hover, .nav-search .input-group:focus {
-  border: 1px solid #ddd;
-}
-.nav-search .form-control {
-  border: 0;
-  background: transparent;
-  font-size: 14px;
-}
-.nav-search .input-group-text {
-  border: 0;
-  background: transparent;
-}
-.nav-search .search-icon {
-  font-size: 21px;
-  color: #666;
 }
 
 /*     Badge    */
@@ -3187,7 +3149,6 @@ body {
   height: 15px;
   border-radius: 2px;
   display: inline-block;
-  float: left;
   padding-top: 3px;
   margin: 2px 5px 0 0;
 }
@@ -3710,7 +3671,6 @@ body {
 .mapael .mapTooltip {
   position: absolute;
   background-color: #474c4b;
-  moz-opacity: 0.70;
   opacity: 0.70;
   filter: alpha(opacity=70);
   border-radius: 10px;
@@ -3825,12 +3785,6 @@ body {
     cursor: pointer;
   }
 
-  .nav-search {
-    width: 100%;
-    margin-right: 0 !important;
-    margin-top: 12px;
-  }
-
   .navbar-header {
     border-top: 1px solid #eee;
     position: absolute;
@@ -3872,7 +3826,4 @@ body {
     max-width: 280px;
   }
 
-  .profile-pic span {
-    display: none;
-  }
 }
