@@ -1,110 +1,117 @@
-<html>
+<html lang="en">
 
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-   <title>FRAME</title>
-   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-      name='viewport' />
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/ready.css') }}" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>FRAME</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" name="viewport" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/ready.css') }}" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
-   <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
 </head>
 
 <body>
-   <div class="wrapper">
-      <div class="main-header">
-         <div class="logo-header">
+	<div class="wrapper">
+		<div class="main-header">
+			<div class="logo-header">
 				<img src="{{ url_for('static', filename='images/favicon.png') }}" class="img-header" />
-            FRAME
-         </div>
+				FRAME
+			</div>
+		</div>
+		<div class="sidebar">
+			<div class="scrollbar-inner sidebar-wrapper">
 
-      </div>
-      <div class="sidebar">
-         <div class="scrollbar-inner sidebar-wrapper">
-
-            <ul class="nav">
-               <li class="nav-item">
-                  <a href="https://synd.inc.hp.com/frame/main">
-                     <p>Home</p>
-                  </a>
-               </li>
-               <li class="nav-item">
-                  <a href="{https://synd.inc.hp.com/frame/scs_tool">
-                     <p>SCS Quality Assurance Tool</p>
-                  </a>
-               </li>
-               <li class="nav-item">
-                  <a href="https://synd.inc.hp.com/frame/qs_tool">
-                     <p>Quickspecs Builder</p>
-                  </a>
-               </li>
-               <li class="nav-item active">
-                  <a href="https://synd.inc.hp.com/frame/image_tool">
-                     <p>Image Toolbox</p>
-                  </a>
-               </li>
-               <li class="nav-item">
-                  <a href="https://synd.inc.hp.com/frame/ds_tool">
-                     <p>CROME</p>
-                  </a>
-               </li>
-               <li class="nav-item">
-                  <a href="http://g8t11912g.inc.hpicorp.net/app/pccs/app5">
-                     <p>PCCS Tool</p>
-                  </a>
-               </li>
-               <li class="nav-item">
-                  <a href="https://g8t11912g.inc.hpicorp.net/app/contentcraft/main">
-                     <p>Content Craft</p>
-                  </a>
-               </li>
-               <li class="nav-item">
-                  <a href="https://synd.inc.hp.com/frame/faq">
-                     <p>FAQ</p>
-                  </a>
-               </li>
-            </ul>
-         </div>
-      </div>
-      <div class="main-panel">
-         <div class="content">
-            <div class="container-fluid">
-               <h4 class="page-title">(╯°□°)╯︵ ɹoɹɹƎ</h4>
-               <div class="row">
-                  <div class="col-md-4">
-                     <div class="card">
-                        <div class="card-header">
-                           <div class="card-title">
-                              <center>Anomaly Detected:</center>
-                           </div>
-                        </div>
-                        <div class="card-body">
-                           <div id="monthlyChart">
-                              <center>
-                                 <p>{{ error_message }}</p>
-                              </center>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <footer class="footer">
-            <div class="container-fluid">
-               <nav class="pull-left">
-                  <ul class="nav">
-                  </ul>
-               </nav>
-               <div class="copyright ml-auto">
-                  HP Inc. Restricted, Copyright 2024 HP Inc. Company.
-               </div>
-            </div>
-         </footer>
-      </div>
-   </div>
-   </div>
+				<ul class="nav">
+					<li class="nav-item">
+						<a href="https://synd.inc.hp.com/frame/main">
+							<i class="bi bi-house"></i>
+							<p>Home</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="{https://synd.inc.hp.com/frame/scs_tool">
+							<i class="bi bi-file-text"></i>
+							<p>SCS QA Tool</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="https://synd.inc.hp.com/frame/qs_tool">
+							<i class="bi bi-file-richtext"></i>
+							<p>Quickspecs Builder</p>
+						</a>
+					</li>
+					<li class="nav-item active">
+						<a href="https://synd.inc.hp.com/frame/image_tool">
+							<i class="bi bi-file-image"></i>
+							<p>Image Toolbox</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="https://synd.inc.hp.com/frame/ds_tool">
+							<i class="bi bi-file-text"></i>
+							<p>CROME</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="http://g8t11912g.inc.hpicorp.net/app/pccs/app5">
+							<i class="bi bi-file-text"></i>
+							<p>PCCS Tool</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="https://g8t11912g.inc.hpicorp.net/app/contentcraft/main">
+							<i class="bi bi-file-code"></i>
+							<p>Content Craft</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="https://synd.inc.hp.com/frame/faq">
+							<i class="bi bi-question-circle"></i>
+							<p>FAQ</p>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="main-panel">
+			<div class="content">
+				<div class="container-fluid">
+					<h4 class="page-title">(╯°□°)╯︵ ɹoɹɹƎ</h4>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">
+										<center>Anomaly Detected:</center>
+									</div>
+								</div>
+								<div class="card-body">
+									<div id="monthlyChart">
+										<center>
+											<p>{{ error_message }}</p>
+										</center>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="footer">
+				<div class="container-fluid">
+					<nav class="pull-left">
+						<ul class="nav">
+						</ul>
+					</nav>
+					<div class="copyright ml-auto">
+						HP Inc. Restricted, Copyright 2024 HP Inc. Company.
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+	</div>
 
 </body>
 
