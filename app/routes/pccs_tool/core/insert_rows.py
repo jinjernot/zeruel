@@ -155,6 +155,10 @@ def insert_rows(file, output_buffer=None):
     pccs_df['ChunkStatus'] = 'F'
     pccs_df['SourceLevel'] = ''
     pccs_df['SourceCulture'] = ''
+    
+    columns = pccs_df.columns.tolist()
+    columns[0], columns[1] = columns[1], columns[0]
+    pccs_df = pccs_df[columns]
 
     if output_buffer:
         with pd.ExcelWriter(output_buffer, engine='openpyxl') as writer:
