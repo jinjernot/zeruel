@@ -424,7 +424,7 @@ th {
 }
 
 .btn-submit {
-    background-color: #28a745;
+    background-color: #0095D9;
     color: white;
     font-family: inherit;
     font-size: 1rem;
@@ -439,7 +439,7 @@ th {
 }
 
 .btn-submit:hover {
-    background-color: #218838;
+    background-color: #0095D9;
 }
 
 .full-width-card {
@@ -718,11 +718,11 @@ input:checked~.slider .dark-icon {
 }
 
 .dark-theme .btn-submit {
-    background-color: #208338;
+    background-color: #0095D9;
 }
 
 .dark-theme .btn-submit:hover {
-    background-color: #28a745;
+    background-color: #0095D9;
 }
 
 .dark-theme .button {
